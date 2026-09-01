@@ -34,7 +34,7 @@ export function sendMessage<TEvent extends Event = Event>(
       url.searchParams.set("wait", "true");
       return url;
     },
-    body: jsonBody<TEvent>(async (event, context) => ({
+    body: jsonBody<TEvent>(async (event: TEvent, context: Context) => ({
       content: await resolve(options.content, event, context),
       ...(options.username === undefined
         ? {}
