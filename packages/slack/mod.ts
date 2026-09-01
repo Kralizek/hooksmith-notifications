@@ -31,7 +31,7 @@ export function sendMessage<TEvent extends Event = Event>(
   return httpPost<TEvent>({
     url: "https://slack.com/api/chat.postMessage",
     headers: bearerAuth(options.token),
-    body: jsonBody<TEvent>(async (event, context) => ({
+    body: jsonBody<TEvent>(async (event: TEvent, context: Context) => ({
       channel: await resolve(options.channel, event, context),
       text: await resolve(options.text, event, context),
       ...(options.threadTs === undefined
