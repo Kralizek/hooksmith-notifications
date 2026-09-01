@@ -13,14 +13,16 @@ const context: Context = {
 };
 
 Deno.test("sendMessage posts through Slack chat.postMessage", async () => {
-  await withFetch(async (_input, init) => {
+  await withFetch((_input, init) => {
     const headers = new Headers(init?.headers);
     assertEquals(headers.get("authorization"), "Bearer xoxb-test");
     assertEquals(JSON.parse(String(init?.body)), {
       channel: "C123",
       text: "hello",
     });
-    return Response.json({ ok: true, channel: "C123", ts: "123.456" });
+    return Promise.resolve(
+      Response.json({ ok: true, channel: "C123", ts: "123.456" }),
+    );
   }, async () => {
     const result = await sendMessage({
       token: "xoxb-test",
