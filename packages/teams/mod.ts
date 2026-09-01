@@ -23,18 +23,16 @@ export function sendMessage<TEvent extends Event = Event>(
       ...(options.text === undefined
         ? {}
         : { text: await resolve(options.text, event, context) }),
-      ...(options.adaptiveCards === undefined
-        ? {}
-        : {
-          type: "message",
-          attachments: (await resolve(options.adaptiveCards, event, context)).map(
-            (card) => ({
-              contentType: "application/vnd.microsoft.card.adaptive",
-              contentUrl: null,
-              content: card,
-            }),
-          ),
-        }),
+      ...(options.adaptiveCards === undefined ? {} : {
+        type: "message",
+        attachments: (await resolve(options.adaptiveCards, event, context)).map(
+          (card) => ({
+            contentType: "application/vnd.microsoft.card.adaptive",
+            contentUrl: null,
+            content: card,
+          }),
+        ),
+      }),
     })),
   });
 }
