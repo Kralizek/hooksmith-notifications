@@ -11,7 +11,22 @@ export default {
     name: "notify-teams",
     listeners: [sendMessage<PageEvent>({
       workflowUrl: Deno.env.get("TEAMS_WORKFLOW_URL")!,
-      text: (event) => `${event.data.title}\n\n${event.metadata?.url}`,
+      adaptiveCards: (event) => [{
+        type: "AdaptiveCard",
+        version: "1.5",
+        body: [
+          {
+            type: "TextBlock",
+            text: event.data.title,
+            weight: "Bolder",
+          },
+          {
+            type: "TextBlock",
+            text: String(event.metadata?.url ?? ""),
+            wrap: true,
+          },
+        ],
+      }],
     })],
   }],
 } satisfies Config<PageEvent>;
