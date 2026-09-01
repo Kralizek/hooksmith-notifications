@@ -79,6 +79,6 @@ The native payload is applied first. Explicit `content`, `embeds`, `components`,
 `username`, and `avatarUrl` options override matching native fields when they
 are supplied.
 
-File uploads are intentionally not part of this JSON message API because
-Discord requires `multipart/form-data` for file content. They can be added as a
-separate listener without complicating the common JSON path.
+File uploads are intentionally not part of this JSON message API because Discord
+requires `multipart/form-data` for file content. They can be added as a separate
+listener without complicating the common JSON path.
