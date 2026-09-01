@@ -61,5 +61,5 @@ const listener = sendMessage({
 
 The native payload is applied first. Explicit `channel`, `text`, `blocks`,
 `attachments`, and `threadTs` options override the corresponding native Slack
-fields when they are supplied. This keeps common message construction
-convenient while leaving access to the full `chat.postMessage` payload surface.
+fields when they are supplied. This keeps common message construction convenient
+while leaving access to the full `chat.postMessage` payload surface.
