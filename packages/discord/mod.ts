@@ -6,6 +6,10 @@ import {
   type ValueOrFactory,
 } from "@hooksmith/http";
 
+export type DiscordEmbed = Record<string, unknown>;
+export type DiscordComponent = Record<string, unknown>;
+export type DiscordPayload = Record<string, unknown>;
+
 export interface DiscordMessageResult {
   id: string;
   channelId: string;
@@ -13,9 +17,12 @@ export interface DiscordMessageResult {
 
 export interface DiscordMessageOptions<TEvent extends Event = Event> {
   webhookUrl: ValueOrFactory<string | URL, TEvent>;
-  content: ValueOrFactory<string, TEvent>;
+  content?: ValueOrFactory<string, TEvent>;
+  embeds?: ValueOrFactory<DiscordEmbed[], TEvent>;
+  components?: ValueOrFactory<DiscordComponent[], TEvent>;
   username?: ValueOrFactory<string, TEvent>;
   avatarUrl?: ValueOrFactory<string, TEvent>;
+  payload?: ValueOrFactory<DiscordPayload, TEvent>;
 }
 
 interface DiscordMessageResponse {
@@ -32,10 +39,24 @@ export function sendMessage<TEvent extends Event = Event>(
         String(await resolve(options.webhookUrl, event, context)),
       );
       url.searchParams.set("wait", "true");
+      if (options.components !== undefined) {
+        url.searchParams.set("with_components", "true");
+      }
       return url;
     },
     body: jsonBody<TEvent>(async (event: TEvent, context: Context) => ({
-      content: await resolve(options.content, event, context),
+      ...(options.payload === undefined
+        ? {}
+        : await resolve(options.payload, event, context)),
+      ...(options.content === undefined
+        ? {}
+        : { content: await resolve(options.content, event, context) }),
+      ...(options.embeds === undefined
+        ? {}
+        : { embeds: await resolve(options.embeds, event, context) }),
+      ...(options.components === undefined
+        ? {}
+        : { components: await resolve(options.components, event, context) }),
       ...(options.username === undefined
         ? {}
         : { username: await resolve(options.username, event, context) }),
