@@ -2,19 +2,40 @@
 
 Slack messaging extensions for Hooksmith using the Slack Web API.
 
+## Setup
+
+Hooksmith needs a Slack bot token and a destination channel ID.
+
+1. Create or open a Slack app at <https://api.slack.com/apps>.
+2. Under **OAuth & Permissions**, add the `chat:write` bot token scope.
+3. Install or reinstall the app to the target workspace.
+4. Copy the **Bot User OAuth Token**. Bot tokens normally start with `xoxb-`.
+5. Add the app to the channel where Hooksmith should post. For public channels,
+   `chat:write.public` can be used when posting without joining the channel.
+6. Copy the channel ID. Slack channel IDs look like `C0123456789` and are
+   preferred over channel names.
+
+Store the values somewhere available to the Hooksmith process, for example:
+
+```sh
+SLACK_BOT_TOKEN=xoxb-...
+SLACK_CHANNEL=C0123456789
+```
+
+Map them to `token` and `channel` respectively:
+
 ```ts
 import { sendMessage } from "@hooksmith/slack";
 
 const listener = sendMessage({
   token: Deno.env.get("SLACK_BOT_TOKEN")!,
-  channel: "C0123456789",
+  channel: Deno.env.get("SLACK_CHANNEL")!,
   text: (event) => `Published: ${event.metadata?.url}`,
 });
 ```
 
-The token needs the `chat:write` scope and the app must be able to post to the
-target conversation. The listener uses `chat.postMessage` and returns the
-channel and message timestamp from Slack.
+The listener uses Slack's `chat.postMessage` API and returns the channel and
+message timestamp from Slack.
 
 ## Rich messages
 
