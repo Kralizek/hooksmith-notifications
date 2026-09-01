@@ -1,4 +1,4 @@
-import type { Event, Listener } from "@hooksmith/core";
+import type { Context, Event, Listener } from "@hooksmith/core";
 import { httpPost, jsonBody, type ValueOrFactory } from "@hooksmith/http";
 
 export interface TeamsMessageOptions<TEvent extends Event = Event> {
@@ -6,7 +6,9 @@ export interface TeamsMessageOptions<TEvent extends Event = Event> {
   text: ValueOrFactory<string, TEvent>;
 }
 
-export function sendMessage<TEvent extends Event = Event>(options: TeamsMessageOptions<TEvent>): Listener<TEvent> {
+export function sendMessage<TEvent extends Event = Event>(
+  options: TeamsMessageOptions<TEvent>,
+): Listener<TEvent> {
   return httpPost<TEvent>({
     url: options.workflowUrl,
     body: jsonBody<TEvent>(async (event, context) => ({
@@ -15,8 +17,15 @@ export function sendMessage<TEvent extends Event = Event>(options: TeamsMessageO
   });
 }
 
-async function resolve<T, TEvent extends Event>(value: ValueOrFactory<T, TEvent>, event: TEvent, context: Parameters<Extract<ValueOrFactory<T, TEvent>, Function>>[1]): Promise<T> {
+async function resolve<T, TEvent extends Event>(
+  value: ValueOrFactory<T, TEvent>,
+  event: TEvent,
+  context: Context,
+): Promise<T> {
   return typeof value === "function"
-    ? await (value as (event: TEvent, context: typeof context) => T | Promise<T>)(event, context)
+    ? await (value as (event: TEvent, context: Context) => T | Promise<T>)(
+      event,
+      context,
+    )
     : value;
 }

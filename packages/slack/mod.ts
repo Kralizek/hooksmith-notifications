@@ -1,4 +1,4 @@
-import type { Event, Listener } from "@hooksmith/core";
+import type { Context, Event, Listener } from "@hooksmith/core";
 import {
   bearerAuth,
   httpPost,
@@ -57,9 +57,12 @@ export function sendMessage<TEvent extends Event = Event>(
 async function resolve<T, TEvent extends Event>(
   value: ValueOrFactory<T, TEvent>,
   event: TEvent,
-  context: Parameters<Extract<ValueOrFactory<T, TEvent>, Function>>[1],
+  context: Context,
 ): Promise<T> {
   return typeof value === "function"
-    ? await (value as (event: TEvent, context: typeof context) => T | Promise<T>)(event, context)
+    ? await (value as (event: TEvent, context: Context) => T | Promise<T>)(
+      event,
+      context,
+    )
     : value;
 }

@@ -1,7 +1,9 @@
 import type { Config, Event } from "@hooksmith/core";
 import { sendMessage } from "@hooksmith/teams";
 
-interface PageData { title: string; }
+interface PageData {
+  title: string;
+}
 type PageEvent = Event<PageData>;
 
 export default {

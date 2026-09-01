@@ -5,11 +5,11 @@ Notification and messaging extensions for
 
 ## Packages
 
-| Package | Purpose |
-| --- | --- |
-| [`@hooksmith/slack`](https://jsr.io/@hooksmith/slack) | Send messages through the Slack Web API. |
-| [`@hooksmith/discord`](https://jsr.io/@hooksmith/discord) | Send messages through Discord webhooks. |
-| [`@hooksmith/teams`](https://jsr.io/@hooksmith/teams) | Send messages through Microsoft Teams Workflows webhooks. |
+| Package                                                   | Purpose                                                   |
+| --------------------------------------------------------- | --------------------------------------------------------- |
+| [`@hooksmith/slack`](https://jsr.io/@hooksmith/slack)     | Send messages through the Slack Web API.                  |
+| [`@hooksmith/discord`](https://jsr.io/@hooksmith/discord) | Send messages through Discord webhooks.                   |
+| [`@hooksmith/teams`](https://jsr.io/@hooksmith/teams)     | Send messages through Microsoft Teams Workflows webhooks. |
 
 All packages build on `@hooksmith/http` and expose Hooksmith listeners rather
 than standalone API clients.

@@ -1,5 +1,10 @@
 import type { Context, Event, Listener } from "@hooksmith/core";
-import { expectStatus, httpPost, jsonBody, type ValueOrFactory } from "@hooksmith/http";
+import {
+  expectStatus,
+  httpPost,
+  jsonBody,
+  type ValueOrFactory,
+} from "@hooksmith/http";
 
 export interface DiscordMessageResult {
   id: string;
@@ -13,19 +18,30 @@ export interface DiscordMessageOptions<TEvent extends Event = Event> {
   avatarUrl?: ValueOrFactory<string, TEvent>;
 }
 
-interface DiscordMessageResponse { id: string; channel_id: string; }
+interface DiscordMessageResponse {
+  id: string;
+  channel_id: string;
+}
 
-export function sendMessage<TEvent extends Event = Event>(options: DiscordMessageOptions<TEvent>): Listener<TEvent> {
+export function sendMessage<TEvent extends Event = Event>(
+  options: DiscordMessageOptions<TEvent>,
+): Listener<TEvent> {
   return httpPost<TEvent>({
     url: async (event, context) => {
-      const url = new URL(String(await resolve(options.webhookUrl, event, context)));
+      const url = new URL(
+        String(await resolve(options.webhookUrl, event, context)),
+      );
       url.searchParams.set("wait", "true");
       return url;
     },
     body: jsonBody<TEvent>(async (event, context) => ({
       content: await resolve(options.content, event, context),
-      ...(options.username === undefined ? {} : { username: await resolve(options.username, event, context) }),
-      ...(options.avatarUrl === undefined ? {} : { avatar_url: await resolve(options.avatarUrl, event, context) }),
+      ...(options.username === undefined
+        ? {}
+        : { username: await resolve(options.username, event, context) }),
+      ...(options.avatarUrl === undefined
+        ? {}
+        : { avatar_url: await resolve(options.avatarUrl, event, context) }),
     })),
     response: {
       parse: "json",
@@ -38,8 +54,15 @@ export function sendMessage<TEvent extends Event = Event>(options: DiscordMessag
   });
 }
 
-async function resolve<T, TEvent extends Event>(value: ValueOrFactory<T, TEvent>, event: TEvent, context: Context): Promise<T> {
+async function resolve<T, TEvent extends Event>(
+  value: ValueOrFactory<T, TEvent>,
+  event: TEvent,
+  context: Context,
+): Promise<T> {
   return typeof value === "function"
-    ? await (value as (event: TEvent, context: Context) => T | Promise<T>)(event, context)
+    ? await (value as (event: TEvent, context: Context) => T | Promise<T>)(
+      event,
+      context,
+    )
     : value;
 }
