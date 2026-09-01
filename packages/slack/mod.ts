@@ -6,6 +6,10 @@ import {
   type ValueOrFactory,
 } from "@hooksmith/http";
 
+export type SlackBlock = Record<string, unknown>;
+export type SlackAttachment = Record<string, unknown>;
+export type SlackPayload = Record<string, unknown>;
+
 export interface SlackMessageResult {
   channel: string;
   ts: string;
@@ -14,8 +18,11 @@ export interface SlackMessageResult {
 export interface SlackMessageOptions<TEvent extends Event = Event> {
   token: ValueOrFactory<string, TEvent>;
   channel: ValueOrFactory<string, TEvent>;
-  text: ValueOrFactory<string, TEvent>;
+  text?: ValueOrFactory<string, TEvent>;
+  blocks?: ValueOrFactory<readonly SlackBlock[], TEvent>;
+  attachments?: ValueOrFactory<readonly SlackAttachment[], TEvent>;
   threadTs?: ValueOrFactory<string, TEvent>;
+  payload?: ValueOrFactory<SlackPayload, TEvent>;
 }
 
 interface SlackResponse {
@@ -32,8 +39,19 @@ export function sendMessage<TEvent extends Event = Event>(
     url: "https://slack.com/api/chat.postMessage",
     headers: bearerAuth(options.token),
     body: jsonBody<TEvent>(async (event: TEvent, context: Context) => ({
+      ...(options.payload === undefined
+        ? {}
+        : await resolve(options.payload, event, context)),
       channel: await resolve(options.channel, event, context),
-      text: await resolve(options.text, event, context),
+      ...(options.text === undefined
+        ? {}
+        : { text: await resolve(options.text, event, context) }),
+      ...(options.blocks === undefined
+        ? {}
+        : { blocks: await resolve(options.blocks, event, context) }),
+      ...(options.attachments === undefined
+        ? {}
+        : { attachments: await resolve(options.attachments, event, context) }),
       ...(options.threadTs === undefined
         ? {}
         : { thread_ts: await resolve(options.threadTs, event, context) }),
