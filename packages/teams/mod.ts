@@ -11,7 +11,7 @@ export function sendMessage<TEvent extends Event = Event>(
 ): Listener<TEvent> {
   return httpPost<TEvent>({
     url: options.workflowUrl,
-    body: jsonBody<TEvent>(async (event, context) => ({
+    body: jsonBody<TEvent>(async (event: TEvent, context: Context) => ({
       text: await resolve(options.text, event, context),
     })),
   });
