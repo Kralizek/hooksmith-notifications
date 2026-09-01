@@ -12,7 +12,7 @@ const context: Context = {
   log: { debug() {}, info() {}, warn() {}, error() {} },
 };
 
-Deno.test("sendMessage posts to a Teams Workflow webhook", async () => {
+Deno.test("sendMessage posts text to a Teams Workflow webhook", async () => {
   await withFetch((input, init) => {
     assertEquals(String(input), "https://example.test/teams-workflow");
     assertEquals(JSON.parse(String(init?.body)), { text: "hello" });
@@ -23,6 +23,50 @@ Deno.test("sendMessage posts to a Teams Workflow webhook", async () => {
       text: "hello",
     }).run(event, context);
     assertEquals(result.success, true);
+  });
+});
+
+Deno.test("sendMessage wraps adaptive cards for the Teams webhook schema", async () => {
+  await withFetch((_input, init) => {
+    assertEquals(JSON.parse(String(init?.body)), {
+      source: "hooksmith",
+      type: "message",
+      attachments: [{
+        contentType: "application/vnd.microsoft.card.adaptive",
+        contentUrl: null,
+        content: {
+          type: "AdaptiveCard",
+          version: "1.5",
+          body: [{ type: "TextBlock", text: "Build complete" }],
+        },
+      }],
+    });
+    return Promise.resolve(new Response(null, { status: 202 }));
+  }, async () => {
+    await sendMessage({
+      workflowUrl: "https://example.test/teams-workflow",
+      payload: { type: "custom", source: "hooksmith" },
+      adaptiveCards: [{
+        type: "AdaptiveCard",
+        version: "1.5",
+        body: [{ type: "TextBlock", text: "Build complete" }],
+      }],
+    }).run(event, context);
+  });
+});
+
+Deno.test("sendMessage supports payload-only workflow requests", async () => {
+  await withFetch((_input, init) => {
+    assertEquals(JSON.parse(String(init?.body)), {
+      type: "MessageCard",
+      summary: "Build complete",
+    });
+    return Promise.resolve(new Response(null, { status: 202 }));
+  }, async () => {
+    await sendMessage({
+      workflowUrl: "https://example.test/teams-workflow",
+      payload: { type: "MessageCard", summary: "Build complete" },
+    }).run(event, context);
   });
 });
 
