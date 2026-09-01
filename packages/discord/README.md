@@ -2,6 +2,28 @@
 
 Discord messaging extensions for Hooksmith.
 
+## Setup
+
+Hooksmith needs the incoming webhook URL for the Discord channel where messages
+should be posted.
+
+1. Open the Discord server and go to **Server Settings** > **Integrations**.
+2. Open **Webhooks** and create a new webhook.
+3. Choose the destination text channel and optionally give the webhook a name
+   and avatar.
+4. Select **Copy Webhook URL**.
+
+The webhook URL contains the webhook ID and token. Treat the complete URL as a
+secret because anyone holding it can post through that webhook.
+
+Store it somewhere available to the Hooksmith process, for example:
+
+```sh
+DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/...
+```
+
+Map it to `webhookUrl`:
+
 ```ts
 import { sendMessage } from "@hooksmith/discord";
 
@@ -11,9 +33,9 @@ const listener = sendMessage({
 });
 ```
 
-`sendMessage` executes a Discord webhook with `wait=true` and returns the
-created message ID and channel ID. `username` and `avatarUrl` can optionally
-override the webhook identity for the message.
+`sendMessage` executes the webhook with `wait=true` and returns the created
+message ID and channel ID. `username` and `avatarUrl` can optionally override
+the webhook identity for the message.
 
 ## Rich messages
 
