@@ -11,7 +11,15 @@ export default {
     name: "notify-discord",
     listeners: [sendMessage<PageEvent>({
       webhookUrl: Deno.env.get("DISCORD_WEBHOOK_URL")!,
-      content: (event) => `${event.data.title}\n\n${event.metadata?.url}`,
+      content: (event) => event.data.title,
+      embeds: (event) => [{
+        title: event.data.title,
+        url: event.metadata?.url,
+        description: "A new page was published.",
+      }],
+      payload: {
+        allowed_mentions: { parse: [] },
+      },
     })],
   }],
 } satisfies Config<PageEvent>;
