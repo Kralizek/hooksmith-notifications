@@ -6,15 +6,22 @@ import {
   type ValueOrFactory,
 } from "@hooksmith/http";
 
+/** Discord embed included in a webhook message. */
 export type DiscordEmbed = Record<string, unknown>;
+
+/** Discord message component included in a webhook message. */
 export type DiscordComponent = Record<string, unknown>;
+
+/** Additional native fields sent to the Discord webhook. */
 export type DiscordPayload = Record<string, unknown>;
 
+/** Identifiers returned after Discord successfully creates a webhook message. */
 export interface DiscordMessageResult {
   id: string;
   channelId: string;
 }
 
+/** Options used to send a Discord webhook message from a Hooksmith event. */
 export interface DiscordMessageOptions<TEvent extends Event = Event> {
   webhookUrl: ValueOrFactory<string | URL, TEvent>;
   content?: ValueOrFactory<string, TEvent>;

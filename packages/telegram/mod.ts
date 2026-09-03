@@ -1,15 +1,22 @@
 import type { Context, Event, Listener } from "@hooksmith/core";
 import { httpPost, jsonBody, type ValueOrFactory } from "@hooksmith/http";
 
+/** Additional native fields sent to Telegram's `sendMessage` method. */
 export type TelegramPayload = Record<string, unknown>;
+
+/** Telegram reply markup attached to a message. */
 export type TelegramReplyMarkup = Record<string, unknown>;
+
+/** Telegram link-preview settings attached to a message. */
 export type TelegramLinkPreviewOptions = Record<string, unknown>;
 
+/** Identifiers returned after Telegram successfully sends a message. */
 export interface TelegramMessageResult {
   messageId: number;
   chatId: number;
 }
 
+/** Options used to send a Telegram message from a Hooksmith event. */
 export interface TelegramMessageOptions<TEvent extends Event = Event> {
   token: ValueOrFactory<string, TEvent>;
   chatId: ValueOrFactory<number | string, TEvent>;
