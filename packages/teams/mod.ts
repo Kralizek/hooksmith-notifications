@@ -1,9 +1,13 @@
 import type { Context, Event, Listener } from "@hooksmith/core";
 import { httpPost, jsonBody, type ValueOrFactory } from "@hooksmith/http";
 
+/** Adaptive Card payload accepted by the Teams workflow listener. */
 export type TeamsAdaptiveCard = Record<string, unknown>;
+
+/** Additional native payload fields sent to the Teams workflow webhook. */
 export type TeamsPayload = Record<string, unknown>;
 
+/** Options used to send a Teams workflow message from a Hooksmith event. */
 export interface TeamsMessageOptions<TEvent extends Event = Event> {
   workflowUrl: ValueOrFactory<string | URL, TEvent>;
   text?: ValueOrFactory<string, TEvent>;
