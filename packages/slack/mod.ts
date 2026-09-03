@@ -6,15 +6,22 @@ import {
   type ValueOrFactory,
 } from "@hooksmith/http";
 
+/** Slack Block Kit block included in a message payload. */
 export type SlackBlock = Record<string, unknown>;
+
+/** Slack attachment included in a message payload. */
 export type SlackAttachment = Record<string, unknown>;
+
+/** Additional native fields sent to Slack's `chat.postMessage` API. */
 export type SlackPayload = Record<string, unknown>;
 
+/** Identifiers returned after Slack successfully posts a message. */
 export interface SlackMessageResult {
   channel: string;
   ts: string;
 }
 
+/** Options used to send a Slack message from a Hooksmith event. */
 export interface SlackMessageOptions<TEvent extends Event = Event> {
   token: ValueOrFactory<string, TEvent>;
   channel: ValueOrFactory<string, TEvent>;
