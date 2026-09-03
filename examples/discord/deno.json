@@ -1,0 +1,7 @@
+{
+  "imports": {
+    "@hooksmith/core": "jsr:@hooksmith/core@^0.4.0",
+    "@hooksmith/discord": "../../packages/discord/mod.ts"
+  },
+  "lock": false
+}
