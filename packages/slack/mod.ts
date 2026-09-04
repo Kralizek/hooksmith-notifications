@@ -43,6 +43,7 @@ export function sendMessage<TEvent extends Event = Event>(
   options: SlackMessageOptions<TEvent>,
 ): Listener<TEvent> {
   return httpPost<TEvent>({
+    name: "slack-send-message",
     url: "https://slack.com/api/chat.postMessage",
     headers: bearerAuth(options.token),
     body: jsonBody<TEvent>(async (event: TEvent, context: Context) => ({
