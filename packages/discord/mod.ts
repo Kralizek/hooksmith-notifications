@@ -41,6 +41,7 @@ export function sendMessage<TEvent extends Event = Event>(
   options: DiscordMessageOptions<TEvent>,
 ): Listener<TEvent> {
   return httpPost<TEvent>({
+    name: "discord",
     url: async (event, context) => {
       const url = new URL(
         String(await resolve(options.webhookUrl, event, context)),
