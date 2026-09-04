@@ -45,6 +45,7 @@ export function sendMessage<TEvent extends Event = Event>(
   options: TelegramMessageOptions<TEvent>,
 ): Listener<TEvent> {
   return httpPost<TEvent>({
+    name: "telegram-send-message",
     url: async (event, context) => {
       const token = await resolve(options.token, event, context);
       return `https://api.telegram.org/bot${token}/sendMessage`;
