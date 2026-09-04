@@ -19,6 +19,7 @@ export function sendMessage<TEvent extends Event = Event>(
   options: TeamsMessageOptions<TEvent>,
 ): Listener<TEvent> {
   return httpPost<TEvent>({
+    name: "teams-send-message",
     url: options.workflowUrl,
     body: jsonBody<TEvent>(async (event: TEvent, context: Context) => ({
       ...(options.payload === undefined
