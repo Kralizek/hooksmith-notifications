@@ -1,5 +1,6 @@
 import { assertEquals } from "@std/assert";
 import type { Context, Event } from "@hooksmith/core";
+import { nullLoggerFactory } from "@hooksmith/runtime";
 import { sendMessage } from "./mod.ts";
 
 const event: Event = {
@@ -9,7 +10,7 @@ const event: Event = {
   data: {},
 };
 const context: Context = {
-  log: { debug() {}, info() {}, warn() {}, error() {} },
+  logger: nullLoggerFactory,
 };
 
 Deno.test("sendMessage posts text to a Teams Workflow webhook", async () => {
