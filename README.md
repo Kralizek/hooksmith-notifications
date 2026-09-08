@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/Kralizek/hooksmith-notifications/actions/workflows/ci.yml/badge.svg)](https://github.com/Kralizek/hooksmith-notifications/actions/workflows/ci.yml)
 [![GitHub Release](https://img.shields.io/github/v/release/Kralizek/hooksmith-notifications)](https://github.com/Kralizek/hooksmith-notifications/releases/latest)
+[![Hooksmith release](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FKralizek%2Fhooksmith-notifications%2Fbadges%2Fhooksmith.json)](https://github.com/Kralizek/hooksmith/releases)
 
 Notification and messaging extensions for
 [Hooksmith](https://github.com/Kralizek/hooksmith).
