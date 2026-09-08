@@ -1,5 +1,8 @@
 # hooksmith-notifications
 
+[![CI](https://github.com/Kralizek/hooksmith-notifications/actions/workflows/ci.yml/badge.svg)](https://github.com/Kralizek/hooksmith-notifications/actions/workflows/ci.yml)
+[![GitHub Release](https://img.shields.io/github/v/release/Kralizek/hooksmith-notifications)](https://github.com/Kralizek/hooksmith-notifications/releases/latest)
+
 Notification and messaging extensions for
 [Hooksmith](https://github.com/Kralizek/hooksmith).
 
